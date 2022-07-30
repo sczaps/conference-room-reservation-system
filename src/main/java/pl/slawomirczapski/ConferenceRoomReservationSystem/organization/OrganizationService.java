@@ -1,6 +1,7 @@
 package pl.slawomirczapski.ConferenceRoomReservationSystem.organization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,25 +14,29 @@ public class OrganizationService {
     private final OrganizationRepository organizationRepository;
 
     @Autowired
-    public OrganizationService(OrganizationRepository organizationRepository) {
+    OrganizationService(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 
     Organization addOrganization(Organization organization) {
+        organizationRepository.findById(organization.getName()).ifPresent(o -> {
+            throw new IllegalArgumentException("Organization already exist!");
+        });
         return organizationRepository.save(organization);
     }
 
     Organization getOrganizationById(String id) {
-        return organizationRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.valueOf(id)));
+        return organizationRepository.findById(id).orElseThrow(() -> new NoSuchElementException(id));
     }
 
-    List<Organization> getAllOrganizations() {
-        return organizationRepository.findAll();
+    List<Organization> getAllOrganizations(SortType sortType) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortType.name()), "name");
+        return organizationRepository.findAll(sort);
     }
 
     Organization updateOrganization(String id, Organization organization) {
         Organization organizationToUpdate = getOrganizationById(id);
-        if (organization.getName() != null) {
+        if (organization.getName() != null && !organizationToUpdate.getName().equals(organization.getName())) {
             organizationToUpdate.setName(organization.getName());
         }
         if (organization.getDescription() != null) {

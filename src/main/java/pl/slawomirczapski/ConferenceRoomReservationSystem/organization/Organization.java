@@ -7,21 +7,35 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 
+interface AddOrganization {
+}
+
+interface UpdateOrganization {
+}
+
 @Entity
 public class Organization {
 
     @Id
-    @Size(min = 2, max = 20)
-    @NotBlank
+    @Size(min = 2, max = 20, groups = {AddOrganization.class, UpdateOrganization.class})
+    @NotBlank(groups = AddOrganization.class)
     private String name;
     private String description;
 
-    public void setName(String name) {
+    public Organization() {
+    }
+
+    public Organization(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
