@@ -12,12 +12,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.GetAllOrganizationArgumentProvider;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.GetByIdOrganizationArgumentProvider;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -50,7 +49,7 @@ class OrganizationRepositoryTest {
 
         //when
         //then
-        assertThrows(JpaSystemException.class, ()->{
+        assertThrows(JpaSystemException.class, () -> {
             organizationRepository.save(arg0);
         });
     }
