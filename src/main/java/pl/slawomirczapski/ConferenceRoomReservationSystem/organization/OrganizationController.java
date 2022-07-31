@@ -31,7 +31,7 @@ public class OrganizationController {
 
     @GetMapping("/{name}")
     Organization findOrganizationById(@PathVariable String name) {
-        return organizationService.getOrganizationById(name);
+        return organizationService.getOrganizationByName(name);
     }
 
     @GetMapping

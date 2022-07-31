@@ -19,14 +19,14 @@ public class OrganizationService {
     }
 
     Organization addOrganization(Organization organization) {
-        organizationRepository.findById(organization.getName()).ifPresent(o -> {
+        organizationRepository.findByName(organization.getName()).ifPresent(o -> {
             throw new IllegalArgumentException("Organization already exist!");
         });
         return organizationRepository.save(organization);
     }
 
-    Organization getOrganizationById(String id) {
-        return organizationRepository.findById(id).orElseThrow(() -> new NoSuchElementException(id));
+    Organization getOrganizationByName(String name) {
+        return organizationRepository.findByName(name).orElseThrow(() -> new NoSuchElementException(name));
     }
 
     List<Organization> getAllOrganizations(SortType sortType) {
@@ -34,8 +34,8 @@ public class OrganizationService {
         return organizationRepository.findAll(sort);
     }
 
-    Organization updateOrganization(String id, Organization organization) {
-        Organization organizationToUpdate = getOrganizationById(id);
+    Organization updateOrganization(String name, Organization organization) {
+        Organization organizationToUpdate = getOrganizationByName(name);
         if (organization.getName() != null && !organizationToUpdate.getName().equals(organization.getName())) {
             organizationToUpdate.setName(organization.getName());
         }
@@ -46,9 +46,9 @@ public class OrganizationService {
         return organizationToUpdate;
     }
 
-    Organization deleteOrganization(String id) {
-        Organization organizationToDelete = getOrganizationById(id);
-        organizationRepository.deleteById(id);
+    Organization deleteOrganization(String name) {
+        Organization organizationToDelete = getOrganizationByName(name);
+        organizationRepository.deleteById(organizationToDelete.getId());
         return organizationToDelete;
     }
 
