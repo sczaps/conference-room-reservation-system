@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class GetByIdOrganizationArgumentProvider implements ArgumentsProvider {
+public class GetByNameOrganizationArgumentProvider implements ArgumentsProvider {
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(
                 Arguments.of(
                         Arrays.asList(
@@ -22,12 +22,12 @@ public class GetByIdOrganizationArgumentProvider implements ArgumentsProvider {
                                 new Organization("test4", "desc4"),
                                 new Organization("test5", "desc5")
                         ),
-                        1L,
+                        "test1",
                         Optional.of(new Organization(1L, "test1", "desc1"))
                 ),
                 Arguments.of(
                         Collections.emptyList(),
-                        1L,
+                        "test1",
                         Optional.empty()
                 ),
                 Arguments.of(
@@ -38,7 +38,7 @@ public class GetByIdOrganizationArgumentProvider implements ArgumentsProvider {
                                 new Organization("test4", "desc4"),
                                 new Organization("test5", "desc5")
                         ),
-                        400L,
+                        "no_name_with_test",
                         Optional.empty()
                 )
         );

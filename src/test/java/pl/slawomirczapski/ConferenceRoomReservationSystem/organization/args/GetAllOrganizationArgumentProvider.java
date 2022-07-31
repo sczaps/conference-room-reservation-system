@@ -22,11 +22,11 @@ public class GetAllOrganizationArgumentProvider implements ArgumentsProvider {
                                 new Organization("test5", "desc5")
                         ),
                         Arrays.asList(
-                                new Organization(1L,"test1", "desc1"),
-                                new Organization(2L,"test2", "desc2"),
-                                new Organization(3L,"test3", "desc3"),
-                                new Organization(4L,"test4", "desc4"),
-                                new Organization(5L,"test5", "desc5")
+                                new Organization(1L, "test1", "desc1"),
+                                new Organization(2L, "test2", "desc2"),
+                                new Organization(3L, "test3", "desc3"),
+                                new Organization(4L, "test4", "desc4"),
+                                new Organization(5L, "test5", "desc5")
                         )
                 ),
                 Arguments.of(Collections.emptyList(), Collections.emptyList())

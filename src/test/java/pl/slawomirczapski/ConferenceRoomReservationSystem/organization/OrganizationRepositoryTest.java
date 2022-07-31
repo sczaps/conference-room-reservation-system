@@ -7,17 +7,16 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.GetAllOrganizationArgumentProvider;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.GetByIdOrganizationArgumentProvider;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.GetByNameOrganizationArgumentProvider;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -29,7 +28,6 @@ class OrganizationRepositoryTest {
 
     @Autowired
     TestEntityManager testEntityManager;
-
 
     @Test
     void should_add_1_organization_when_save_via_repository() {
@@ -68,6 +66,21 @@ class OrganizationRepositoryTest {
 
         //when
         Optional<Organization> result = organizationRepository.findById(arg1);
+
+        //then
+        assertEquals(arg2, result);
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(GetByNameOrganizationArgumentProvider.class)
+    void when_find_by_name_in_arg_1_when_arg_0_list_is_available_then_arg_2_item_should_be_returned(List<Organization> arg0,
+                                                                                                    String arg1,
+                                                                                                    Optional<Organization> arg2) {
+        //given
+        arg0.forEach(o -> testEntityManager.persist(o));
+
+        //when
+        Optional<Organization> result = organizationRepository.findByName(arg1);
 
         //then
         assertEquals(arg2, result);

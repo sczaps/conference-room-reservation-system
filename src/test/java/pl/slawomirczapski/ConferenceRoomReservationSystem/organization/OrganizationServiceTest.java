@@ -58,7 +58,7 @@ class OrganizationServiceTest {
     void when_add_non_unique_name_organization_then_exception_should_be_thrown() {
         //given
         String name = "test1";
-        Organization organization = new Organization(1L,name, "desc1");
+        Organization organization = new Organization(1L, name, "desc1");
         Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(organization));
 
         //when
@@ -72,7 +72,7 @@ class OrganizationServiceTest {
     void when_fetch_organization_by_existed_id_then_organization_should_be_returned() {
         //given
         String name = "test1";
-        Organization organization = new Organization(1L,name, "desc1");
+        Organization organization = new Organization(1L, name, "desc1");
         Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(organization));
 
 
