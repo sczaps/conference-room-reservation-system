@@ -17,27 +17,27 @@ public class UpdateOrganizationArgumentProvider implements ArgumentsProvider {
                 //expected
                 Arguments.of(
                         "test1",
-                        new Organization("test1", "desc1"),
-                        new Organization(null, "updated_desc_1"),
-                        new Organization("test1", "updated_desc_1")
+                        new Organization(1L,"test1", "desc1"),
+                        new Organization(1L,null, "updated_desc_1"),
+                        new Organization(1L,"test1", "updated_desc_1")
                 ),
                 Arguments.of(
                         "test1",
-                        new Organization("test1", "desc1"),
-                        new Organization("test2", null),
-                        new Organization("test2", "desc1")
+                        new Organization(1L,"test1", "desc1"),
+                        new Organization(1L,"test2", null),
+                        new Organization(1L,"test2", "desc1")
                 ),
                 Arguments.of(
                         "test1",
-                        new Organization("test1", "desc1"),
-                        new Organization("test2", "updated_desc_1"),
-                        new Organization("test2", "updated_desc_1")
+                        new Organization(1L,"test1", "desc1"),
+                        new Organization(1L,"test2", "updated_desc_1"),
+                        new Organization(1L,"test2", "updated_desc_1")
                 ),
                 Arguments.of(
                         "test1",
-                        new Organization("test1", "desc1"),
-                        new Organization(null, null),
-                        new Organization("test1", "desc1")
+                        new Organization(1L,"test1", "desc1"),
+                        new Organization(1L,null, null),
+                        new Organization(1L,"test1", "desc1")
                 )
         );
     }

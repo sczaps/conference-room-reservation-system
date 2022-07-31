@@ -41,8 +41,8 @@ class OrganizationServiceTest {
     void when_add_unique_name_organization_then_organization_should_be_added_to_the_repo() {
         //given
         String name = "test5";
-        Organization organization = new Organization(name, "desc5");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Organization organization = new Organization(1L, name, "desc5");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
         Mockito.when(organizationRepository.save(organization)).thenReturn(organization);
 
         //when
@@ -50,7 +50,7 @@ class OrganizationServiceTest {
 
         //then
         assertEquals(organization, results);
-        Mockito.verify(organizationRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(organizationRepository, Mockito.times(1)).findByName(Mockito.any());
         Mockito.verify(organizationRepository, Mockito.times(1)).save(Mockito.any());
     }
 
@@ -58,8 +58,8 @@ class OrganizationServiceTest {
     void when_add_non_unique_name_organization_then_exception_should_be_thrown() {
         //given
         String name = "test1";
-        Organization organization = new Organization(name, "desc1");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(organization));
+        Organization organization = new Organization(1L,name, "desc1");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(organization));
 
         //when
         //then
@@ -72,17 +72,17 @@ class OrganizationServiceTest {
     void when_fetch_organization_by_existed_id_then_organization_should_be_returned() {
         //given
         String name = "test1";
-        Organization organization = new Organization(name, "desc1");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(organization));
+        Organization organization = new Organization(1L,name, "desc1");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(organization));
 
 
         //when
-        Organization results = organizationService.getOrganizationById(name);
+        Organization results = organizationService.getOrganizationByName(name);
 
         //then
         assertNotNull(organization);
         assertEquals(organization, results);
-        Mockito.verify(organizationRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(organizationRepository, Mockito.times(1)).findByName(Mockito.any());
         Mockito.verify(organizationRepository, Mockito.never()).findAll();
     }
 
@@ -90,12 +90,12 @@ class OrganizationServiceTest {
     void when_fetch_organization_by_non_existed_id_then_exception_should_be_thrown() {
         //given
         String name = "test1";
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
 
         //when
         //then
         assertThrows(NoSuchElementException.class, () -> {
-            organizationService.getOrganizationById(name);
+            organizationService.getOrganizationByName(name);
         });
     }
 
@@ -108,7 +108,7 @@ class OrganizationServiceTest {
             Organization arg3
     ) {
         //given
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg1));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg1));
         Mockito.when(organizationRepository.save(arg1)).thenReturn(arg3);
 
         //when
@@ -124,15 +124,15 @@ class OrganizationServiceTest {
     void when_update_non_exist_organization_then_exception_should_be_thrown() {
         //given
         String name = "test5";
-        Organization organization = new Organization(name, "desc5");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Organization organization = new Organization(1L, name, "desc5");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
 
         //when
         //then
         assertThrows(NoSuchElementException.class, () -> {
             organizationService.updateOrganization(name, organization);
         });
-        Mockito.verify(organizationRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(organizationRepository, Mockito.times(1)).findByName(Mockito.any());
         Mockito.verify(organizationRepository, Mockito.never()).deleteById(Mockito.any());
     }
 
@@ -140,15 +140,15 @@ class OrganizationServiceTest {
     void when_delete_exist_organization_then_organization_should_be_deleted_from_repo() {
         //given
         String name = "test5";
-        Organization organization = new Organization(name, "desc5");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(organization));
+        Organization organization = new Organization(1L, name, "desc5");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(organization));
 
         //when
         Organization results = organizationService.deleteOrganization(name);
 
         //then
         assertEquals(organization, results);
-        Mockito.verify(organizationRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(organizationRepository, Mockito.times(1)).findByName(Mockito.any());
         Mockito.verify(organizationRepository, Mockito.times(1)).deleteById(Mockito.any());
     }
 
@@ -156,14 +156,14 @@ class OrganizationServiceTest {
     void when_delete_non_exist_organization_then_exception_should_be_thrown() {
         //given
         String name = "test5";
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
 
         //when
         //then
         assertThrows(NoSuchElementException.class, () -> {
             organizationService.deleteOrganization(name);
         });
-        Mockito.verify(organizationRepository, Mockito.times(1)).findById(Mockito.any());
+        Mockito.verify(organizationRepository, Mockito.times(1)).findByName(Mockito.any());
         Mockito.verify(organizationRepository, Mockito.never()).deleteById(Mockito.any());
     }
 
