@@ -30,7 +30,7 @@ public class OrganizationController {
     }
 
     @GetMapping("/{name}")
-    Organization findOrganizationById(@PathVariable String name) {
+    Organization findOrganizationByName(@PathVariable String name) {
         return organizationService.getOrganizationByName(name);
     }
 
@@ -51,7 +51,7 @@ public class OrganizationController {
 
     @ExceptionHandler(value = NoSuchElementException.class)
     public ResponseEntity<Object> exception(NoSuchElementException exception) {
-        return new ResponseEntity<>(String.format("Organization with id %s not found", exception.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(String.format("Organization with name %s not found", exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
