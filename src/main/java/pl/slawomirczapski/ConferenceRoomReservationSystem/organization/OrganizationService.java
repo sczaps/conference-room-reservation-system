@@ -3,6 +3,7 @@ package pl.slawomirczapski.ConferenceRoomReservationSystem.organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 
 import java.util.List;
 import java.util.NoSuchElementException;

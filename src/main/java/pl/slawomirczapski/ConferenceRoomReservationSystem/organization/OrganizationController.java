@@ -7,11 +7,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.Error;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/organizations")
@@ -50,24 +49,34 @@ public class OrganizationController {
     }
 
     @ExceptionHandler(value = NoSuchElementException.class)
-    public ResponseEntity<Object> exception(NoSuchElementException exception) {
-        return new ResponseEntity<>(String.format("Organization with name %s not found", exception.getMessage()), HttpStatus.NOT_FOUND);
+    ResponseEntity<Error<String>> handleNoSuchElementException(NoSuchElementException e) {
+        return new ResponseEntity<>(new Error<>(HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public ResponseEntity<Object> exception(IllegalArgumentException exception) {
-        return new ResponseEntity<>(String.format(exception.getMessage()), HttpStatus.BAD_REQUEST);
+    ResponseEntity<Error<String>> handleIllegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new Error<>(HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationExceptions(
+    ResponseEntity<Error<Map<String, List<String>>>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, List<String>> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            List<String> params = errors.getOrDefault(fieldName, new ArrayList<>());
+            params.add(errorMessage);
+            errors.put(fieldName, params);
         });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Error<>(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                errors
+        ), HttpStatus.BAD_REQUEST);
     }
 }

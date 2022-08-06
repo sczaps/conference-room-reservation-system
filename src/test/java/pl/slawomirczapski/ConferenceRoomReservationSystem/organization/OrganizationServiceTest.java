@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.SortOrganizationArgumentProvider;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args.UpdateOrganizationArgumentProvider;
 

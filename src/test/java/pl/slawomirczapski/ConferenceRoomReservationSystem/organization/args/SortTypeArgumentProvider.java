@@ -3,7 +3,7 @@ package pl.slawomirczapski.ConferenceRoomReservationSystem.organization.args;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
-import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.SortType;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 
 import java.util.stream.Stream;
 
