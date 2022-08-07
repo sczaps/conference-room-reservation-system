@@ -56,6 +56,13 @@ public class ConferenceRoom {
         this.organization = organization;
     }
 
+    public ConferenceRoom(String identifier, Boolean isAvailable, Integer numberOfSeats, Organization organization) {
+        this.identifier = identifier;
+        this.isAvailable = isAvailable;
+        this.numberOfSeats = numberOfSeats;
+        this.organization = organization;
+    }
+
     public String getId() {
         return id;
     }

@@ -40,6 +40,13 @@ public class ConferenceRoomDto {
         this.organization = organization;
     }
 
+    public ConferenceRoomDto(String identifier, Boolean isAvailable, Integer numberOfSeats, String organization) {
+        this.identifier = identifier;
+        this.isAvailable = isAvailable;
+        this.numberOfSeats = numberOfSeats;
+        this.organization = organization;
+    }
+
     public String getId() {
         return id;
     }

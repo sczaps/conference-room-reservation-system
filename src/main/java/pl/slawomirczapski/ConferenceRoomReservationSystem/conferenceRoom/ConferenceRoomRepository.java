@@ -10,4 +10,5 @@ public interface ConferenceRoomRepository extends JpaRepository<ConferenceRoom, 
     Optional<ConferenceRoom> findByName(String name);
 
     Optional<ConferenceRoom> findByNameAndOrganization_Name(String name, String organizationName);
+
 }

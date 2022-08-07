@@ -1,7 +1,11 @@
 package pl.slawomirczapski.ConferenceRoomReservationSystem.conferenceRoom;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.Organization;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.OrganizationRepository;
 
@@ -39,8 +43,26 @@ class ConferenceRoomService {
         return conferenceRoomTransformer.toDto(conferenceRoomRepository.save(conferenceRoom));
     }
 
-    List<ConferenceRoomDto> getAllConferenceRooms() {
-        return conferenceRoomRepository.findAll()
+    ConferenceRoomDto getConferenceRoomById(String id) {
+        return conferenceRoomRepository.findById(id)
+                .map(conferenceRoomTransformer::toDto)
+                .orElseThrow(() -> {
+                    throw new NoSuchElementException("No conference room found!");
+                });
+    }
+
+    List<ConferenceRoomDto> getAllConferenceRooms(SortType sortType,
+                                                  String identifier,
+                                                  Integer level,
+                                                  Boolean isAvailable,
+                                                  Integer numberOfSeats,
+                                                  String organization) {
+        ExampleMatcher matcher = ExampleMatcher.matchingAll().withIgnoreNullValues().withIgnoreCase();
+        Sort sort = Sort.by(Sort.Direction.fromString(sortType.name()), "name");
+        Example<ConferenceRoom> conferenceRoomExample = Example.of(
+                new ConferenceRoom(null, identifier, level, isAvailable, numberOfSeats, new Organization(organization)),
+                matcher);
+        return conferenceRoomRepository.findAll(conferenceRoomExample, sort)
                 .stream()
                 .map(conferenceRoomTransformer::toDto)
                 .collect(Collectors.toList());

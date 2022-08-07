@@ -3,6 +3,7 @@ package pl.slawomirczapski.ConferenceRoomReservationSystem.conferenceRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 
 import java.util.List;
 
@@ -23,9 +24,19 @@ class ConferenceRoomController {
         return conferenceRoomService.addConferenceRoom(conferenceRoomDto);
     }
 
+    @GetMapping("/{id}")
+    ConferenceRoomDto getConferenceRoomById(@PathVariable String id) {
+        return conferenceRoomService.getConferenceRoomById(id);
+    }
+
     @GetMapping
-    List<ConferenceRoomDto> findAllConferenceRooms() {
-        return conferenceRoomService.getAllConferenceRooms();
+    List<ConferenceRoomDto> findAllConferenceRooms(@RequestParam(defaultValue = "ASC") SortType sortType,
+                                                   @RequestParam(required = false) String identifier,
+                                                   @RequestParam(required = false) Integer level,
+                                                   @RequestParam(required = false) Boolean isAvailable,
+                                                   @RequestParam(required = false) Integer numberOfSeats,
+                                                   @RequestParam(required = false) String organization) {
+        return conferenceRoomService.getAllConferenceRooms(sortType, identifier, level, isAvailable, numberOfSeats, organization);
     }
 
     @PutMapping("/{id}")
