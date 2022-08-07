@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.Organization;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.organization.OrganizationDto;
 
 import java.util.stream.Stream;
 
@@ -12,32 +13,40 @@ public class UpdateOrganizationArgumentProvider implements ArgumentsProvider {
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(
                 //name
-                //existing arg
+                //existing org
                 //to update
                 //expected
                 Arguments.of(
-                        "test1",
-                        new Organization(1L, "test1", "desc1"),
-                        new Organization(1L, null, "updated_desc_1"),
-                        new Organization(1L, "test1", "updated_desc_1")
+                        "Intive",
+                        new Organization("Intive", "Delivery company"),
+                        new OrganizationDto(null, "IT company"),
+                        new Organization(null, "IT company"),
+                        new Organization("Intive", "IT company"),
+                        new OrganizationDto("Intive", "IT company")
                 ),
                 Arguments.of(
-                        "test1",
-                        new Organization(1L, "test1", "desc1"),
-                        new Organization(1L, "test2", null),
-                        new Organization(1L, "test2", "desc1")
+                        "Intive",
+                        new Organization("Intive", "Delivery company"),
+                        new OrganizationDto("Tieto", null),
+                        new Organization("Tieto", null),
+                        new Organization("Tieto", "Delivery company"),
+                        new OrganizationDto("Tieto", "Delivery company")
                 ),
                 Arguments.of(
-                        "test1",
-                        new Organization(1L, "test1", "desc1"),
-                        new Organization(1L, "test2", "updated_desc_1"),
-                        new Organization(1L, "test2", "updated_desc_1")
+                        "Intive",
+                        new Organization("Intive", "Delivery company"),
+                        new OrganizationDto("Tieto", "IT company"),
+                        new Organization("Tieto", "IT company"),
+                        new Organization("Tieto", "IT company"),
+                        new OrganizationDto("Tieto", "IT company")
                 ),
                 Arguments.of(
-                        "test1",
-                        new Organization(1L, "test1", "desc1"),
-                        new Organization(1L, null, null),
-                        new Organization(1L, "test1", "desc1")
+                        "Intive",
+                        new Organization("Intive", "Delivery company"),
+                        new OrganizationDto(null, null),
+                        new Organization(null, null),
+                        new Organization("Intive", "Delivery company"),
+                        new OrganizationDto("Intive", "Delivery company")
                 )
         );
     }

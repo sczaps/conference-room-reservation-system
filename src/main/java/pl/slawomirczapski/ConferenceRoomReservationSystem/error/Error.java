@@ -1,4 +1,4 @@
-package pl.slawomirczapski.ConferenceRoomReservationSystem;
+package pl.slawomirczapski.ConferenceRoomReservationSystem.error;
 
 public class Error<T> {
 

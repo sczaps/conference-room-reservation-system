@@ -13,12 +13,12 @@ public class SortOrganizationArgumentProvider implements ArgumentsProvider {
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(
                 Arguments.of(
-                        SortType.ASC, Sort.by(Sort.Direction.ASC, "name")
-
+                        SortType.ASC,
+                        Sort.by(Sort.Direction.ASC, "name")
                 ),
                 Arguments.of(
-                        SortType.DESC, Sort.by(Sort.Direction.DESC, "name")
-
+                        SortType.DESC,
+                        Sort.by(Sort.Direction.DESC, "name")
                 )
         );
     }

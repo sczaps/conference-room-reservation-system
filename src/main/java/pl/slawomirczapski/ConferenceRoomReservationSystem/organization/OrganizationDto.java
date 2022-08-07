@@ -1,46 +1,49 @@
 package pl.slawomirczapski.ConferenceRoomReservationSystem.organization;
 
-import pl.slawomirczapski.ConferenceRoomReservationSystem.conferenceRoom.ConferenceRoom;
+import pl.slawomirczapski.ConferenceRoomReservationSystem.conferenceRoom.ConferenceRoomDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+interface AddOrganization {
+}
 
-@Entity
-public class Organization {
+interface UpdateOrganization {
+}
 
-    @Id
-    @GeneratedValue
+public class OrganizationDto {
+
     private Long id;
+    @Size(min = 2, max = 20, groups = {AddOrganization.class, UpdateOrganization.class})
+    @NotBlank(groups = AddOrganization.class)
     private String name;
     private String description;
-    @OneToMany(mappedBy = "organization")
-    private List<ConferenceRoom> conferenceRooms = new ArrayList<>();
+    private List<ConferenceRoomDto> conferenceRooms = new ArrayList<>();
 
-    public Organization() {
+    public OrganizationDto() {
     }
 
-    public Organization(String name) {
-        this.name = name;
-    }
-
-    public Organization(String name, String description) {
+    public OrganizationDto(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Organization(Long id, String name, String description) {
+    public OrganizationDto(Long id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public Organization(Long id, String name, String description, List<ConferenceRoom> conferenceRooms) {
+    public OrganizationDto(String name, String description, List<ConferenceRoomDto> conferenceRooms) {
+        this.name = name;
+        this.description = description;
+        this.conferenceRooms = conferenceRooms;
+    }
+
+    public OrganizationDto(Long id, String name, String description, List<ConferenceRoomDto> conferenceRooms) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -71,11 +74,11 @@ public class Organization {
         this.description = description;
     }
 
-    public List<ConferenceRoom> getConferenceRooms() {
+    public List<ConferenceRoomDto> getConferenceRooms() {
         return conferenceRooms;
     }
 
-    public void setConferenceRooms(List<ConferenceRoom> conferenceRooms) {
+    public void setConferenceRooms(List<ConferenceRoomDto> conferenceRooms) {
         this.conferenceRooms = conferenceRooms;
     }
 
@@ -83,7 +86,7 @@ public class Organization {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
+        OrganizationDto that = (OrganizationDto) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(conferenceRooms, that.conferenceRooms);
     }
 
@@ -94,7 +97,7 @@ public class Organization {
 
     @Override
     public String toString() {
-        return "Organization{" +
+        return "OrganizationDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

@@ -7,36 +7,44 @@ import pl.slawomirczapski.ConferenceRoomReservationSystem.SortType;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
-public class OrganizationService {
+class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
+    private final OrganizationTransformer organizationTransformer;
 
     @Autowired
-    OrganizationService(OrganizationRepository organizationRepository) {
+    OrganizationService(OrganizationRepository organizationRepository, OrganizationTransformer organizationTransformer) {
         this.organizationRepository = organizationRepository;
+        this.organizationTransformer = organizationTransformer;
     }
 
-    Organization addOrganization(Organization organization) {
+    OrganizationDto addOrganization(OrganizationDto organizationDto) {
+        Organization organization = organizationTransformer.fromDto(organizationDto);
         organizationRepository.findByName(organization.getName()).ifPresent(o -> {
             throw new IllegalArgumentException("Organization already exist!");
         });
-        return organizationRepository.save(organization);
+        return organizationTransformer.toDto(organizationRepository.save(organization));
     }
 
-    Organization getOrganizationByName(String name) {
-        return organizationRepository.findByName(name).orElseThrow(() -> new NoSuchElementException(name));
+    OrganizationDto getOrganizationByName(String name) {
+        return organizationTransformer.toDto(getOrganizationEntityByName(name));
     }
 
-    List<Organization> getAllOrganizations(SortType sortType) {
+    List<OrganizationDto> getAllOrganizations(SortType sortType) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortType.name()), "name");
-        return organizationRepository.findAll(sort);
+        return organizationRepository.findAll(sort)
+                .stream()
+                .map(organizationTransformer::toDto)
+                .collect(Collectors.toList());
     }
 
-    Organization updateOrganization(String name, Organization organization) {
-        Organization organizationToUpdate = getOrganizationByName(name);
+    OrganizationDto updateOrganization(String name, OrganizationDto organizationDto) {
+        Organization organization = organizationTransformer.fromDto(organizationDto);
+        Organization organizationToUpdate = getOrganizationEntityByName(name);
         if (organization.getName() != null && !organizationToUpdate.getName().equals(organization.getName())) {
             organizationToUpdate.setName(organization.getName());
         }
@@ -48,13 +56,17 @@ public class OrganizationService {
             organizationToUpdate.setDescription(organization.getDescription());
         }
         organizationRepository.save(organizationToUpdate);
-        return organizationToUpdate;
+        return organizationTransformer.toDto(organizationToUpdate);
     }
 
-    Organization deleteOrganization(String name) {
-        Organization organizationToDelete = getOrganizationByName(name);
+    OrganizationDto deleteOrganization(String name) {
+        OrganizationDto organizationToDelete = getOrganizationByName(name);
         organizationRepository.deleteById(organizationToDelete.getId());
         return organizationToDelete;
+    }
+
+    private Organization getOrganizationEntityByName(String name) {
+        return organizationRepository.findByName(name).orElseThrow(() -> new NoSuchElementException(name));
     }
 
 }
