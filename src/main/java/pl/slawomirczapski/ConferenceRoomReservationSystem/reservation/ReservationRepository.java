@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, String> {
+interface ReservationRepository extends JpaRepository<Reservation, String> {
     Optional<Reservation> findByConferenceRoom_IdAndStartDateLessThanAndEndDateGreaterThan(
             String conferenceRoomId,
             LocalDateTime endDate,
